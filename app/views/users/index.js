@@ -11,29 +11,29 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import UserApi from '../../api/users';
 
 // Components
-import Modal from '../../components/modal';
+import ModalComponent from '../../components/modal';
 
 // Assets
 import styles from './styles';
 
-// Const
 class Users extends Component {
-	static navigationOptions = ({ navigation }) => ({
-		headerRight: (
-			<TouchableOpacity
-				style={{ marginRight: 15 }}
-				onPress={() => navigation.state.params.openModal()}
-			>
-				<Icon name="add" color="red" size={28} />
-			</TouchableOpacity>
-		),
-    });
+	// static navigationOptions = ({ navigation }) => ({
+	// 	headerRight: (
+	// 		<TouchableOpacity
+	// 			style={{ marginRight: 15 }}
+	// 			onPress={() => console.log(navigation)}
+	// 		>
+	// 			<Icon name="add" color="red" size={28} />
+	// 		</TouchableOpacity>
+	// 	),
+    // });
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			users: [],
+			users: [], 
 			addModal: false,
+			edit: false,
 			user: {
 				username: '',
 				email: '',
@@ -45,11 +45,6 @@ class Users extends Component {
 	}
 
 	componentDidMount() {
-		const { navigation } = this.props;
-        const params = {
-			openModal: () => this.setState({ addModal: true }),
-		};
-		navigation.setParams(params);
         this.getData();
 	}
 
@@ -59,16 +54,60 @@ class Users extends Component {
 	}
 
 	getData() {
-		UserApi.get().then((response) => {
+		UserApi.get().then(response => {
 			if (response.data) {
 				this.setState({ users: response.data });
 			}
 		});
 	}
 
+	cleanStates() {
+		this.setState({
+			addModal: false,
+			edit: false,
+			user: {
+				username: '',
+				email: '',
+				name: '',
+				role: 1,
+				password: '',
+			},
+		})
+	}
+
+	sendData() {
+		const { user, edit } = this.state;
+		if (edit) {
+			const userEdit = {
+				username: user.username,
+				email: user.email,
+				name: user.name,
+				role: user.role,
+				password: user.password,
+			}
+			UserApi.put(userEdit, user.id).then(() => {
+				this.getData();
+				this.cleanStates();
+			});
+		} else {
+			UserApi.post(user).then(response => {
+				if (response.data) {
+					this.getData();
+					this.cleanStates();
+				}
+			});
+		}
+	}
+
+	deleteData(id) {
+		UserApi.delete(id).then(() => {
+			this.getData();
+		})
+	}
+
 	renderItem(item, index) {
 		return (
-			<TouchableOpacity
+			<View
 				key={index}
 				style={styles.itemInfo}
 			>
@@ -76,21 +115,38 @@ class Users extends Component {
 					<Text>{item.name}</Text>
 					<Text>{item.email}</Text>
 				</View>
-				<Icon name="edit" color="black" size={28} />
-			</TouchableOpacity>
+				<TouchableOpacity
+					onPress={() => this.setState({ user: { ...item }, addModal: true, edit: true })}
+				>
+					<Icon name="edit" color="black" size={20} />
+				</TouchableOpacity>
+				<TouchableOpacity
+					onPress={() => this.deleteData(item.id)}
+				>
+					<Icon name="delete" color="red" size={20} />
+				</TouchableOpacity>
+			</View>
 		)
 	}
 
 	render() {
-		const { users, addModal, user } = this.state;
+		const { users, addModal, user, edit } = this.state;
 		return (
 			<View style={styles.container}>
+				<View style={styles.containerBtnAdd}>
+					<TouchableOpacity
+						style={{ marginRight: 15 }}
+						onPress={() => this.setState({ addModal: true })}
+					>
+						<Icon name="add" color="red" size={28} />
+					</TouchableOpacity>
+				</View>
 				<FlatList
 					data={users}
 					renderItem={({ item, index }) => this.renderItem(item, index)}
 					keyExtractor={item => item.id}
 				/>
-				<Modal
+				<ModalComponent
 					visible={addModal}
 					onClose={() => this.setState({ addModal: false })}
 				>
@@ -99,18 +155,21 @@ class Users extends Component {
 						style={styles.textInput}
 						placeholder="Usuario"
 						placeholderTextColor="#FFFFFF"
+						value={user.username}
 					/>
 					<TextInput
 						onChangeText={email => this.setData(email, 'email')}
 						style={styles.textInput}
 						placeholder="Email"
 						placeholderTextColor="#FFFFFF"
+						value={user.email}
 					/>
 					<TextInput
 						onChangeText={name => this.setData(name, 'name')}
 						style={styles.textInput}
 						placeholder="Nombre"
 						placeholderTextColor="#FFFFFF"
+						value={user.name}
 					/>
 					<TextInput
 						onChangeText={password => this.setData(password, 'password')}
@@ -122,11 +181,11 @@ class Users extends Component {
 					<TouchableOpacity
 						style={styles.btnSave}
 						activeOpacity={0.7}
-						onPress={() => console.log(user)}
+						onPress={() => this.sendData()}
 					>
 						<Text style={styles.textBtnSave}>S A V E</Text>
 					</TouchableOpacity>
-				</Modal>
+				</ModalComponent>
 			</View>
 		);
 	}

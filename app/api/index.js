@@ -27,7 +27,7 @@ class Request {
 			method: 'POST',
 			data: value,
 			baseURL: this.baseURL,
-		}).then(data => data).catch((err) => console.log(err));
+		}).then(data => data).catch((err) => console.log({err}));
 	}
 
 	put(value, id) {
@@ -36,7 +36,7 @@ class Request {
 			method: 'PUT',
 			data: value,
 			baseURL: this.baseURL,
-		}).then(data => data).catch((err) => console.log(err));
+		}).then(data => data).catch((err) => console.log({err}));
 	}
 
 	delete(id) {

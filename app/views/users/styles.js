@@ -42,5 +42,11 @@ export default StyleSheet.create({
 	textBtnSave: {
 		color: '#FFFFFF',
 		fontSize: 16
+	},
+	containerBtnAdd: {
+		width: '100%',
+		height: 50,
+		alignItems: 'flex-end',
+		justifyContent: 'center',
 	}
 });

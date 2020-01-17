@@ -1,5 +1,5 @@
 // Dependencies
-import React, { Component, Children } from 'react';
+import React, { Component } from 'react';
 import {
 	View,
 	Modal,
@@ -54,8 +54,8 @@ class ModalComponent extends Component {
 }
 ModalComponent.defaultProps = {
 	visible: false,
-	onClose: null,
-	onSave: null
+	onClose: () => console.log('Press'),
+	onSave: () => console.log('Press'),
 };
 ModalComponent.propTypes = {
 	visible: PropTypes.bool,

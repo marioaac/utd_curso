@@ -21,6 +21,7 @@ class Login extends Component {
 	}
 
 	render() {
+		const { navigation } = this.props;
 		return (
 			<View style={styles.container}>
 				<View style={styles.subContainer}>
@@ -47,7 +48,7 @@ class Login extends Component {
 					<TouchableOpacity
 						style={styles.btnLogin}
 						activeOpacity={0.7}
-						onPress={() => this.props.navigation.navigate('Users')}
+						onPress={() => navigation.navigate('Users')}
 					>
 						<Text style={styles.textBtnLogin}>L O G I N</Text>
 					</TouchableOpacity>
