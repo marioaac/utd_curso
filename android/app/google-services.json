@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "999333428172",
+    "firebase_url": "https://utd-curso.firebaseio.com",
+    "project_id": "utd-curso",
+    "storage_bucket": "utd-curso.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:999333428172:android:a580ffc6b070957962fb69",
+        "android_client_info": {
+          "package_name": "com.utd_curso"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "999333428172-e9mkls3375tgtne741cc9kk1hucpchvg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRyx-cx8Pl_-ryHZDdZ0CBUk0Kxh5L6vA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "999333428172-e9mkls3375tgtne741cc9kk1hucpchvg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
